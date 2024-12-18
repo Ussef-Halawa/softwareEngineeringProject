@@ -1,5 +1,5 @@
 import random
-import tkinter as tk
+import customtkinter as ctk
 from tkinter import messagebox
 
 class MathQuizApp:
@@ -24,24 +24,28 @@ class MathQuizApp:
         self.question_timer = 10  # Seconds per question
         self.timer_id = None
 
+        # Configure theme
+        ctk.set_appearance_mode("light")
+        ctk.set_default_color_theme("blue")
+
         # Main Menu
         self.main_menu()
 
     def main_menu(self):
         self.clear_window()
 
-        tk.Label(self.root, text="Math Quiz Application", font=("Arial", 20)).pack(pady=20)
+        ctk.CTkLabel(self.root, text="Math Quiz Application", font=("Arial", 20)).pack(pady=20)
 
-        tk.Label(self.root, text="Number of Questions:").pack()
-        self.num_questions_entry = tk.Entry(self.root)
+        ctk.CTkLabel(self.root, text="Number of Questions:").pack()
+        self.num_questions_entry = ctk.CTkEntry(self.root)
         self.num_questions_entry.pack(pady=10)
 
-        tk.Label(self.root, text="Select Difficulty:").pack()
-        self.difficulty_var = tk.StringVar(value="")  # Default to empty
-        tk.Radiobutton(self.root, text="Easy", variable=self.difficulty_var, value="Easy").pack(pady=5)
-        tk.Radiobutton(self.root, text="Hard", variable=self.difficulty_var, value="Hard").pack(pady=5)
+        ctk.CTkLabel(self.root, text="Select Difficulty:").pack()
+        self.difficulty_var = ctk.StringVar(value="Easy")
+        ctk.CTkRadioButton(self.root, text="Easy", variable=self.difficulty_var, value="Easy").pack(pady=5)
+        ctk.CTkRadioButton(self.root, text="Hard", variable=self.difficulty_var, value="Hard").pack(pady=5)
 
-        tk.Button(self.root, text="Start Quiz", command=self.start_quiz).pack(pady=20)
+        ctk.CTkButton(self.root, text="Start Quiz", command=self.start_quiz).pack(pady=20)
 
     def start_quiz(self):
         try:
@@ -53,10 +57,6 @@ class MathQuizApp:
             return
 
         self.difficulty = self.difficulty_var.get()
-        if not self.difficulty:
-            messagebox.showerror("Invalid Input", "Please select a difficulty level.")
-            return
-
         self.current_question = 0
         self.score = 0
 
@@ -96,17 +96,17 @@ class MathQuizApp:
         self.current_question += 1
         self.question, self.correct_answer, self.choices = self.generate_question()
 
-        tk.Label(self.root, text=f"Question {self.current_question}/{self.num_questions}", font=("Arial", 16)).pack(pady=10)
-        tk.Label(self.root, text=self.question, font=("Arial", 18)).pack(pady=10)
+        ctk.CTkLabel(self.root, text=f"Question {self.current_question}/{self.num_questions}", font=("Arial", 16)).pack(pady=10)
+        ctk.CTkLabel(self.root, text=self.question, font=("Arial", 18)).pack(pady=10)
 
-        self.answer_var = tk.StringVar(value="")  # Default to empty
+        self.answer_var = ctk.StringVar()
         for choice in self.choices:
-            tk.Radiobutton(self.root, text=str(choice), variable=self.answer_var, value=str(choice)).pack(anchor="w", padx=20, pady=5)
+            ctk.CTkRadioButton(self.root, text=str(choice), variable=self.answer_var, value=str(choice)).pack(anchor="w", padx=20, pady=5)
 
-        self.timer_label = tk.Label(self.root, text=f"Time left: {self.question_timer}s")
+        self.timer_label = ctk.CTkLabel(self.root, text=f"Time left: {self.question_timer}s")
         self.timer_label.pack(pady=10)
 
-        tk.Button(self.root, text="Submit Answer", command=self.validate_answer).pack(pady=20)
+        ctk.CTkButton(self.root, text="Submit Answer", command=self.validate_answer).pack(pady=20)
 
         self.start_timer()
 
@@ -116,11 +116,11 @@ class MathQuizApp:
 
     def update_timer(self):
         if self.remaining_time > 0:
-            self.timer_label.config(text=f"Time left: {self.remaining_time}s")
+            self.timer_label.configure(text=f"Time left: {self.remaining_time}s")
             self.remaining_time -= 1
             self.timer_id = self.root.after(1000, self.update_timer)
         else:
-            self.timer_label.config(text="Time's up!")
+            self.timer_label.configure(text="Time's up!")
             self.validate_answer(timeout=True)
 
     def validate_answer(self, timeout=False):
@@ -144,11 +144,11 @@ class MathQuizApp:
     def show_report(self):
         self.clear_window()
 
-        tk.Label(self.root, text="Quiz Completed!", font=("Arial", 20)).pack(pady=20)
-        tk.Label(self.root, text=f"Your Score: {self.score}/{self.num_questions}", font=("Arial", 16)).pack(pady=10)
+        ctk.CTkLabel(self.root, text="Quiz Completed!", font=("Arial", 20)).pack(pady=20)
+        ctk.CTkLabel(self.root, text=f"Your Score: {self.score}/{self.num_questions}", font=("Arial", 16)).pack(pady=10)
 
-        tk.Button(self.root, text="Restart Quiz", command=self.main_menu).pack(pady=10)
-        tk.Button(self.root, text="Exit", command=self.root.quit).pack(pady=10)
+        ctk.CTkButton(self.root, text="Restart Quiz", command=self.main_menu).pack(pady=10)
+        ctk.CTkButton(self.root, text="Exit", command=self.root.quit).pack(pady=10)
 
     def clear_window(self):
         for widget in self.root.winfo_children():
@@ -156,6 +156,6 @@ class MathQuizApp:
 
 # Run the application
 if __name__ == "__main__":
-    root = tk.Tk()
+    root = ctk.CTk()
     app = MathQuizApp(root)
     root.mainloop()
