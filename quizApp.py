@@ -49,8 +49,8 @@ class MathQuizApp:
 
         ttk.Label(main_frame, text="Select Difficulty:").pack()
         self.difficulty_var = tk.StringVar(value="")
-        ttk.Radiobutton(main_frame, text="Easy", variable=self.difficulty_var, value="Easy").pack(pady=5)
-        ttk.Radiobutton(main_frame, text="Hard", variable=self.difficulty_var, value="Hard").pack(pady=5)
+        ttk.Radiobutton(main_frame, text="Normal Student(Easy)", variable=self.difficulty_var, value="Easy").pack(pady=5)
+        ttk.Radiobutton(main_frame, text="UCMAS Student(Hard)", variable=self.difficulty_var, value="Hard").pack(pady=5)
 
         ttk.Button(main_frame, text="Start Quiz", command=self.start_quiz).pack(pady=20)
 
